@@ -1,0 +1,1 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/bladisfearus/Antiblack/refs/heads/main/Anti%20Black%20Script%20LUA%20rs",true))()
