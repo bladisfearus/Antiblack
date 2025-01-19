@@ -1,0 +1,41 @@
+local Players = game:GetService("Players")
+
+local function calculateBrightness(color)
+    return (color.R * 0.299 + color.G * 0.587 + color.B * 0.114)
+end
+
+local MIN_BRIGHTNESS = 0.1
+
+local function checkAppearance(player)
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:WaitForChild("Humanoid")
+    local description = humanoid:WaitForChild("HumanoidDescription")
+
+    local bodyColors = {
+        description.HeadColor3,
+        description.TorsoColor3,
+        description.LeftArmColor3,
+        description.RightArmColor3,
+        description.LeftLegColor3,
+        description.RightLegColor3
+    }
+
+    local tooDark = false
+
+    for _, color in ipairs(bodyColors) do
+        if calculateBrightness(color) < MIN_BRIGHTNESS then
+            tooDark = true
+            break
+        end
+    end
+
+    if tooDark then
+        player:Kick("Get out monkey")
+    end
+end
+
+Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function()
+        checkAppearance(player)
+    end)
+end)
